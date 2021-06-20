@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="styles/Styles4.css" rel="stylesheet">
+    <title>Экзаменатор</title>
+</head>
+<body>
+    <div id="header">
+        <h1>Конструктор тестов</h1>
+        <p>Вы вошли как: <span id="userName"></span></p>
+        <input type="button" value="Выйти" id="RegOut" />
+        <div id="nav">
+            <ul>
+                <li><a href="/homePage.html">Главная</a></li>
+                <li><a href="/myTestsPage.html">Мои тесты</a></li>
+                <li><a href="#">Пройти тесты</a></li>
+                <li><a href="/testCreatorPage.html">Конcтруктов тестов</a></li>
+                <li><a href="/testAchievementsPage.html">Просмотр достижений</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="article">
+        <h2>Создание нового теста</h2>
+        <div>
+            <label>Название теста</label>
+            <input id="testName" type="text" required /><br /><br />
+        </div>
+        <div>
+            <label>Выберите количество вопросов</label>
+            <input id="numberOfQuestions" type="number" min="1" required /><br /><br />
+        </div>
+        <div>
+            <label>Выберите количество попыток</label>
+            <input id="attempts" type="number" min="1" max="3" required /><br /><br />
+        </div>
+        <div id="button">
+            <button type="submit" id="submit">Далее</button><br /><br /><br />
+        </div>
+    </div>
+    <div id="footer">
+        <p>2021 © IBA Task 3</p>
+    </div>
+    <script>
+        var tokenKey = "accessToken";
+        var loginKey = "userName";
+        var testNameKey = "testName";
+        var numberOfQuestionsKey = "numberOfQuestions";
+
+        var data1 = localStorage.getItem(loginKey);
+
+        document.getElementById("userName").innerText = data1;
+
+        document.getElementById("RegOut").addEventListener("click", e => {
+
+            e.preventDefault();
+            localStorage.removeItem(tokenKey);
+            localStorage.removeItem(loginKey);
+            location.href = "index.html";
+        });
+
+        /*--------------------------------------*/
+
+        async function postTestDataAsync() {
+
+            const formData = new FormData();
+            formData.append("testName", document.getElementById("testName").value);
+            formData.append("numberOfQuestions", document.getElementById("numberOfQuestions").value);
+            formData.append("attempts", document.getElementById("attempts").value);
+            formData.append("login", localStorage.getItem(loginKey));
+
+            const token = localStorage.getItem(tokenKey);
+
+            const response1 = await fetch("/testCreate", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: formData
+            });
+
+            const data2 = await response1.json();
+
+            if (response1.ok === true) {
+
+                localStorage.setItem(testNameKey, document.getElementById("testName").value);
+                localStorage.setItem(numberOfQuestionsKey, document.getElementById("numberOfQuestions").value);
+                goToNewUrl();
+            }
+            else {
+
+                console.log("Error: ", response1.status, data2.errorText);
+                alert(data2.errorText);
+            }
+        };
+
+        async function goToNewUrl() {
+            const token = localStorage.getItem(tokenKey);
+
+            const response2 = await fetch("/getTestEditorLink", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            const url = await response2.json();
+            location.href = url;
+        };
+
+        document.getElementById("submit").addEventListener("click", e => {
+
+            e.preventDefault();
+            postTestDataAsync();
+        });
+    </script>
+</body>
+</html>

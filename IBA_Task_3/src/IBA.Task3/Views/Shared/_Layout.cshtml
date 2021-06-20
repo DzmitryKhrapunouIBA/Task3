@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @*<link href="@Url.Content("~/Views/Styles/StyleMasterPage.scss")" rel="stylesheet" type="text/css" />*@
+    <link rel="stylesheet" href="~/Views/Styles/StyleMasterPage.scss" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div id="header" name="header">
+        <nav>
+            <ul class="menu" id="nav">
+                <li>@Html.ActionLink("Главная", "Index", "Home")</li>
+                <li><a href="/homePage.html">Главная</a></li>
+                <li><a href="/myTestsPage.html">Мои тесты</a></li>
+                <li><a href="#">Пройти тесты</a></li>
+                <li><a href="/testCreatorPage.html">Конcтруктов тестов</a></li>
+                <li><a href="/testAchievementsPage.html">Просмотр достижений</a></li>
+            </ul>
+        </nav>
+    </div>    
+    <div>
+        @RenderBody()
+    </div>
+    <div id="footer">
+        <p>2021 © IBA Task 3</p>
+    </div>
+</body>
+</html>

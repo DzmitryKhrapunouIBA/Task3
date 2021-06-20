@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\IBA_Task_3.DAL\IBA.Task3.DAL.csproj" />
+    <ProjectReference Include="..\IBA.Task3.DAL\IBA.Task3.DAL.csproj" />
+    <ProjectReference Include="..\IBA.Task3\IBA.Task3.csproj" />
+  </ItemGroup>
+
+</Project>

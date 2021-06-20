@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Экзаменатор";
+    Layout = null;
+}
+
+<head>
+    <meta charset="utf-8">
+    <link href="styles/Styles1.css" rel="stylesheet">
+</head>
+<body>
+    <header id="header">
+        <h1>Добро пожаловать в Экзаменатор</h1>
+        <nav id="nav"></nav>
+    </header>
+    <div class="wrapper">
+        <div id="article">
+            <h3>Для продолжения работы с Экзаменатором</h3>
+            <h3>"Войдите" или "Зарегистрируйтесь"</h3>
+            <div class="container">
+                <div class="card-body" id="card-body">
+                    <form class="form">
+                        <div class="panel-body">
+                            <button type="submit" class="btn-primary" formaction="javascript:location.href = 'Login';">Войти</button>
+                            <button type="submit" class="btn-primary" formaction="javascript:location.href = 'Registration';">Зарегестрироваться</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <p>2021 © IBA Task 3</p>
+    </div>
+</body>

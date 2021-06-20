@@ -1,0 +1,73 @@
+﻿body {
+    font-family: Verdana, Arial, sans-serif;
+    background-color: $main-style;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+nav {
+    background-color: #eee;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+
+    li {
+        float: left;
+        list-style: none;
+
+        &:last-child a {
+            border-right: none;
+        }
+    }
+
+    a {
+        display: block;
+        color: black;
+        padding: 10px 25px;
+        text-decoration: none;
+        border-right: 1px solid #ccc;
+
+        &:hover {
+            font-weight: bold;
+        }
+    }
+
+    &:after {
+        content: " ";
+        display: table;
+        clear: both;
+    }
+}
+
+.menu {
+    padding-left: 10px;
+}
+
+    .menu ul {
+        list-style: none;
+    }
+
+    .menu li {
+        display: inline;
+    }
+
+    .menu a:hover {
+        color: red;
+    }
+
+table {
+    vertical-align: middle;
+    text-align: left;
+}
+
+.header {
+    font-weight: bold;
+}
+
+td {
+    padding-right: 10px;
+}
+
+input {
+    width: 150px;
+}

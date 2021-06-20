@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="styles/Styles2.css" rel="stylesheet">
+    <title>Регистрация</title>
+</head>
+<body>
+    <div id="return" style="display:none;">
+        <h1>Регистрация прошла успешно</h1>
+        <input type="button" value="Вернуться на главную страницу" id="regOut" />
+    </div>
+    <div id="loginForm">
+        <div id="header">
+            <h1>Регистрация</h1>
+        </div>
+        <div id="card-body">
+                <!--<form class="form" method="post" action="/Registration/Login">-->
+            <div>
+                <label>Фамилия:</label><br />
+                <input type="text" id="lastname" required/> <br /><br />
+            </div>
+            <div>
+                <label>Имя:</label><br />
+                <input type="text" id="firstname" required/> <br /><br />
+            </div>
+            <div>
+                <label>Отчество:</label><br />
+                <input type="text" id="surname" required/> <br /><br />
+            </div>
+            <div>
+                <label>Логин:</label><br />
+                <input type="text" id="login" required/> <br /><br />
+            </div>
+            <div>
+                <label>Пароль:</label><br />
+                <input type="password" id="password" required/><br /><br />
+            </div>
+            <div>
+                <label>Введите пароль ещё раз:</label><br />
+                <input type="password" id="passwordConfirm" required/><br /><br />
+            </div>
+            <div id="card-body">
+                <input type="submit" id="submitRegist" value="Зарегестрироваться" /><br /><br />
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <p>2021 © IBA Task 3</p>
+    </div>
+
+    <script>
+        var tokenKey = "accessToken";
+
+        async function registrationAsync() {
+
+            const formData = new FormData();
+            formData.append("grant_type", "password");
+            formData.append("lastname", document.getElementById("lastname").value);
+            formData.append("firstname", document.getElementById("firstname").value);
+            formData.append("surname", document.getElementById("surname").value);
+            formData.append("login", document.getElementById("login").value);
+            formData.append("password", document.getElementById("password").value);
+            formData.append("passwordConfirm", document.getElementById("passwordConfirm").value);
+
+            const response = await fetch("api/registration", {
+                method: "POST",
+                headers: { "Accept": "application/json" },
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                if (result.success)
+                {
+                    document.getElementById("return").style.display = "block";
+                    document.getElementById("loginForm").style.display = "none";
+                }
+                
+            }
+            else {
+
+                console.log("Error: ", response.status, result);
+                alert(result.msg);
+            }
+        };
+
+        document.getElementById("submitRegist").addEventListener("click", e => {
+
+            e.preventDefault();
+            registrationAsync();
+        });
+
+        //document.getElementById("regOut").addEventListener("click", e => {
+
+        //    e.preventDefault();
+        //    getData("/Registration/Success");
+        //    //location.href = "index.html";
+        //});
+
+        document.getElementById("regOut").addEventListener("click", e => {
+
+            e.preventDefault();
+            location.href = "index.html";
+        });
+    </script>
+</body>
+</html>

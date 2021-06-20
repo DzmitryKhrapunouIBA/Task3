@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="styles/Styles1.css" rel="stylesheet">
+    <title>Экзаменатор</title>
+</head>
+<body>
+    <div id="header">
+        <h1>Экзаменатор</h1>
+        <p>Вы вошли как: <span id="userName"></span></p>
+        <input type="button" value="Выйти" id="RegOut" />
+        <div id="nav">
+            <ul>
+                <li><a href="/homePage.html">Главная</a></li>
+                <li><a href="/myTestsPage.html">Мои тесты</a></li>
+                <li><a href="#">Пройти тесты</a></li>
+                <li><a href="/testCreatorPage.html">Конcтруктов тестов</a></li>
+                <li><a href="/testAchievementsPage.html">Просмотр достижений</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div id="sidebar1" class="aside">
+            <h2>Создавай свои тесты</h2>
+            <p>
+                Используя "Конструктор тестов", вы можете создать свой собственный тест
+                и назначить его любому зарегистрированному пользователю.
+            </p>
+        </div>
+        <div id="sidebar2" class="aside">
+            <h2>Проходи тесты</h2>
+            <p>
+                Пройди тесты и узнай, насколько ты эрудирован.
+            </p>
+        </div>
+        <div id="article">
+            <h2>Что такое экзаменатор?</h2>
+            <p>Это платформа, предназначенная для облегчения тестирования разных людей</p>
+        </div>
+    </div>
+    <div id="footer">
+        <p>2021 © IBA Task 3</p>
+    </div>
+
+    <script>
+
+        var tokenKey = "accessToken";
+        var loginKey = "userName";
+
+        var data = localStorage.getItem(loginKey);
+
+        document.getElementById("userName").innerText = data;
+
+        document.getElementById("RegOut").addEventListener("click", e => {
+
+            e.preventDefault();
+            localStorage.removeItem(tokenKey);
+            localStorage.removeItem(loginKey);
+            location.href = "index.html";
+        });
+    </script>
+</body>
+</html>

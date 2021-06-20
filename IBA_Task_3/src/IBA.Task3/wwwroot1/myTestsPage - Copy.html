@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="styles/Styles4.css" rel="stylesheet">
+    <title>Ekzamenator</title>
+</head>
+<body>
+    <div id="header">
+        <h1>Конструктор тестов</h1>
+        <p>Вы вошли как: <span id="userName"></span></p>
+        <input type="button" value="Выйти" id="RegOut" />
+        <div id="nav">
+            <ul>
+                <li><a href="/homePage.html">Главная</a></li>
+                <li><a href="/myTestsPage.html">Мои тесты</a></li>
+                <li><a href="#">Пройти тесты</a></li>
+                <li><a href="/testCreatorPage.html">Конcтруктов тестов</a></li>
+                <li><a href="/testAchievementsPage.html">Просмотр достижений</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div id="article">
+            <form name="editForm" id="editForm">
+                <p>Тема теста: <span id="testName"></span></p>
+                <h2>Редактирование вопроса</h2>
+                <input type="hidden" name="id" value="0" />
+                <div class="form-group col-md-5">
+                    <label for="name">Вопрос:</label>
+                    <div class="question">
+                        <textarea name="question" class="wmd-input" id="question" rows="5"></textarea><br /><br />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="age">Ответ1:</label>
+                    <input class="response-form" name="answer1" id="answer1" type="text" /><br /><br />
+                </div>
+                <div class="form-group">
+                    <label for="age">Ответ2:</label>
+                    <input class="response-form" name="answer2" id="answer2" type="text" /><br /><br />
+                </div>
+                <div class="form-group">
+                    <label for="age">Ответ3:</label>
+                    <input class="response-form" name="answer3" id="answer3" type="text" /><br /><br />
+                </div>
+                <div class="form-group">
+                    <label for="age">Ответ4:</label>
+                    <input class="response-form" name="answer4" id="answer4" type="text" /><br /><br />
+                </div>
+                <div class="form-group">
+                    <label for="age">Выберите правильный ответ</label>
+                    <input class="response-form" name="correctAnswer" id="correctAnswer" type="number" max="4" min="1" /><br /><br />
+                </div>
+                <div class="panel-body">
+                    <button type="submit" id="submit">Далее</button><br /><br /><br />
+                </div>
+            </form>
+            <form name="finishEditForm" id="finishEditForm">
+                <p>Тема теста: <span id="testName"></span></p>
+                <h2><span id="testName"></span></h2>
+            </form>
+        </div>
+    </div>
+    <div id="footer">
+        <p>2021 © IBA Task 3</p>
+    </div>
+
+    <script>
+        document.getElementById("editForm").style.display = "block";
+        document.getElementById("finishEditForm").style.display = "none";
+
+        //document.getElementById("editForm").style.display = "none";
+        //document.getElementById("finishEditForm").style.display = "block";
+
+        var tokenKey = "accessToken";
+        var loginKey = "userName";
+
+        var user = localStorage.getItem(loginKey);
+
+        document.getElementById("userName").innerText = user;
+
+        document.getElementById("RegOut").addEventListener("click", e => {
+
+            e.preventDefault();
+            localStorage.removeItem(tokenKey);
+            localStorage.removeItem(loginKey);
+            location.href = "index.html";
+        });
+        /*--------------------------------------*/
+        
+        async function postTestDataAsync() {
+
+            const formData = new FormData();
+            formData.append("login", localStorage.getItem(loginKey));
+
+            const token = localStorage.getItem(tokenKey);
+
+            const response1 = await fetch("/myTests", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + token
+                },
+                body: formData
+            });
+
+            const data = await response1.json();
+
+            if (response1.ok === true) {
+                if (data !== null) {
+
+                    for (var i = 0; i < data.length; i++)
+                        alert(data[i]);
+                }
+                else {
+
+                    document.getElementById("editForm").style.display = "none";
+                    document.getElementById("finishEditForm").style.display = "block";
+                }
+            }
+            else {
+
+                console.log("Error: ", response1.status, data.errorText);
+                alert(data.errorText);
+            }
+        };
+
+        async function goToNewUrl() {
+            const token = localStorage.getItem(tokenKey);
+
+            const response2 = await fetch("/getTestEditorLink", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Authorization": "Bearer " + token
+                }
+            });
+
+            const url = await response2.json();
+            location.href = url;
+        };
+
+        document.getElementById("submit").addEventListener("click", e => {
+
+            e.preventDefault();
+            postTestDataAsync();
+        });
+    </script>
+</body>
+</html>

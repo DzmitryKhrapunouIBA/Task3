@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IBA.Task3.TestUpdateModel
+
+<div class="card-header">
+    <div class="card-title">Test</div>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class="card-body">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Question, "Вопрос:")
+            @Html.TextAreaFor(model => model.Question)
+            @Html.ValidationMessageFor(model => model.Question)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Answer1, "Ответ1:")
+            @Html.TextBoxFor(model => model.Answer1)
+            @Html.ValidationMessageFor(model => model.Answer1)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Answer2, "Ответ2:")
+            @Html.TextBoxFor(model => model.Answer2)
+            @Html.ValidationMessageFor(model => model.Answer2)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Answer3, "Ответ3:")
+            @Html.TextBoxFor(model => model.Answer3)
+            @Html.ValidationMessageFor(model => model.Answer3)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Answer4, "Ответ4:")
+            @Html.TextBoxFor(model => model.Answer4)
+            @Html.ValidationMessageFor(model => model.Answer4)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CorrectAnswer, "Выберите правильный ответ:")
+            @Html.TextBoxFor(model => model.CorrectAnswer)
+            @Html.ValidationMessageFor(model => model.CorrectAnswer)
+        </div>
+        <div class="form-group">
+            <input type="submit" name="submit" class="btn btn-danger" value="Далее" />
+        </div>
+    </div>
+}
+
+<div class="form-group">
+    <input type="submit" name="submit" class="btn btn-danger" value="Завершить" />
+</div>
+
+
+@*<div class="wrapper">
+    <div id="article">
+        <form name="editForm" id="editForm">
+            <p>Тема теста: <span id="testName"></span></p>
+            <h2>Редактирование вопроса</h2>
+            <input type="hidden" name="id" value="0" />
+            <div class="form-group col-md-5">
+                <label for="name">Вопрос:</label>
+                <div class="question">
+                    <textarea name="question" class="wmd-input" id="question" rows="5"></textarea><br /><br />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="age">Ответ1:</label>
+                <input class="response-form" name="answer1" id="answer1" type="text" /><br /><br />
+            </div>
+            <div class="form-group">
+                <label for="age">Ответ2:</label>
+                <input class="response-form" name="answer2" id="answer2" type="text" /><br /><br />
+            </div>
+            <div class="form-group">
+                <label for="age">Ответ3:</label>
+                <input class="response-form" name="answer3" id="answer3" type="text" /><br /><br />
+            </div>
+            <div class="form-group">
+                <label for="age">Ответ4:</label>
+                <input class="response-form" name="answer4" id="answer4" type="text" /><br /><br />
+            </div>
+            <div class="form-group">
+                <label for="age">Выберите правильный ответ</label>
+                <input class="response-form" name="correctAnswer" id="correctAnswer" type="number" max="4" min="1" /><br /><br />
+            </div>
+            <div class="panel-body">
+                <button type="submit" id="submit">Далее</button><br /><br /><br />
+            </div>
+        </form>
+    </div>
+</div>*@
+

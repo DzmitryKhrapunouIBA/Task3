@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DAL\**" />
+    <Content Remove="DAL\**" />
+    <EmbeddedResource Remove="DAL\**" />
+    <None Remove="DAL\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Styles\StyleMasterPage.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Styles\StyleMasterPage.scss" />
+    <Content Include="wwwroot1\homePage.html" />
+    <Content Include="wwwroot1\index.html" />
+    <Content Include="wwwroot1\loginPage.html" />
+    <Content Include="wwwroot1\loginPage1.html" />
+    <Content Include="wwwroot1\myTestsPage - Copy.html" />
+    <Content Include="wwwroot1\myTestsPage.html" />
+    <Content Include="wwwroot1\myTestsPageCop.html" />
+    <Content Include="wwwroot1\registrationPage.html" />
+    <Content Include="wwwroot1\styles\styles.scss" />
+    <Content Include="wwwroot1\styles\Styles1.css" />
+    <Content Include="wwwroot1\styles\Styles2.css" />
+    <Content Include="wwwroot1\styles\Styles3.css" />
+    <Content Include="wwwroot1\styles\Styles4.css" />
+    <Content Include="wwwroot1\testAchievementsPage.html" />
+    <Content Include="wwwroot1\testCreatorPage.html" />
+    <Content Include="wwwroot1\testEditorPage.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IBA.Task3.DAL\IBA.Task3.DAL.csproj" />
+  </ItemGroup>
+
+</Project>
