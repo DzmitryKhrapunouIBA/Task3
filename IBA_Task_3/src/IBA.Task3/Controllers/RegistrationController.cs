@@ -2,11 +2,13 @@
 using System.Threading.Tasks;
 using IBA.Task3.DAL.Models;
 using IBA.Task3.DAL.Servises;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IBA.Task3.Controllers
 {
-    //[Route("api/registration")]
+
+    [Authorize]
     public class RegistrationController : Controller
     {
         private IUserService UserService { get; }
@@ -16,12 +18,14 @@ namespace IBA.Task3.Controllers
             UserService = userService;
         }
 
+        [AllowAnonymous]
         [HttpGet("registration")]
         public IActionResult Registration()
         {
             return View("Registration");
         }
 
+        [AllowAnonymous]
         [HttpPost("registration")]
         public async Task<IActionResult> Registration(RegistrationModel model, CancellationToken token = default)
         {

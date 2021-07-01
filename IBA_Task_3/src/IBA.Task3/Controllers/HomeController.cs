@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IBA.Task3.Controllers
 {
 
+    //[Authorize]
     public class HomeController : Controller
     {
 
@@ -11,27 +12,25 @@ namespace IBA.Task3.Controllers
         {
         }
 
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
-        [Authorize]
-        [HttpGet("Home")]
+        [Route("Home")]
         public IActionResult Home()
         {
             return View("Home");
         }
 
 
-        //[Authorize]
-        //[HttpGet("Home")]
+        //[Route("Home")]
         //public IActionResult Home()
         //{
         //    var response = new
         //    {
-        //        url = "Home"
+        //        view = View("Home")
         //    };
 
         //    return Json(response);

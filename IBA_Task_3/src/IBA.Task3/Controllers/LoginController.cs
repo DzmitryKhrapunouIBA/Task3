@@ -9,6 +9,7 @@ namespace IBA.Task3.Controllers
     /// <summary>
     /// Контроллер авторизации
     /// </summary>
+    [Authorize]
     public class LoginController : Controller
     {
         private IUserService UserService { get; }
@@ -24,6 +25,7 @@ namespace IBA.Task3.Controllers
             JwtGenerator = jwtGenerator;
         }
 
+        [AllowAnonymous]
         [HttpGet("login")]
         public IActionResult Login()
         {
@@ -35,6 +37,7 @@ namespace IBA.Task3.Controllers
         /// <param name="login"></param>
         /// <param name="password"></param>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpPost("token")]
         public async Task<IActionResult> Token(AuthModel model = default, CancellationToken token = default)
         {
@@ -63,22 +66,6 @@ namespace IBA.Task3.Controllers
             {
                 return Json(ResultBase.Failure(e?.Message));
             }
-        }
-
-        //[HttpPost("Ok")]
-        //public IActionResult Ok()
-        //{
-        //    return RedirectToAction("Home", "Home");
-        //}
-
-        [HttpPost("Ok")]
-        public IActionResult Ok()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return Content(User.Identity.Name);
-            }
-            return Content("не аутентифицирован");
         }
     }
 }

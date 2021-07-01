@@ -5,11 +5,9 @@
 
 @model IBA.Task3.TestUpdateModel
 
-<div class="card-header">
-    <div class="card-title">Test</div>
-</div>
+<link href="~/Styles/Styles4.css" rel="stylesheet">
 
-@using (Html.BeginForm())
+@*@using (Html.BeginForm())
 {
     <div class="card-body">
         <div class="form-group">
@@ -50,10 +48,10 @@
 
 <div class="form-group">
     <input type="submit" name="submit" class="btn btn-danger" value="Завершить" />
-</div>
+</div>*@
 
 
-@*<div class="wrapper">
+<div class="wrapper">
     <div id="article">
         <form name="editForm" id="editForm">
             <p>Тема теста: <span id="testName"></span></p>
@@ -85,10 +83,19 @@
                 <label for="age">Выберите правильный ответ</label>
                 <input class="response-form" name="correctAnswer" id="correctAnswer" type="number" max="4" min="1" /><br /><br />
             </div>
-            <div class="panel-body">
-                <button type="submit" id="submit">Далее</button><br /><br /><br />
+            <div id="card-body">
+                <input type="submit" id="submitEdit" value="Далее" /><br /><br />
             </div>
         </form>
+        <form name="finishEditForm" id="finishEditForm">
+            <p>Тема теста: <span id="testName"></span></p>
+            <h2><span id="testName"></span></h2>
+        </form>
+        <div id="card-body">
+            <input type="submit" id="submitFinish" value="Завершить" /><br /><br />
+        </div>
     </div>
-</div>*@
+</div>
+
+<script src="~/Scripts/TestEditor.js"></script>
 

@@ -1,86 +1,27 @@
 ﻿@{
     ViewBag.Title = "Аутентификация";
     Layout = "~/Views/Login/_Layout.cshtml";
+
 }
 
-<head>
-    <meta charset="utf-8" />
-    <link href="~/wwwroot1/styles/styles.scss" rel="stylesheet">
-</head>
-<body>
-    @Html.AntiForgeryToken()
+@Html.AntiForgeryToken()
 
-    <div id="loginForm">
-        <div>
-            <form>
+<div id="loginForm">
+    <div>
+        <form>
+            <div id="card-body">
+                <label>Введите логин</label><br />
+                <input type="text" id="login" required /> <br /><br />
+                <label>Введите пароль</label><br />
+                <input type="password" id="password" required /><br /><br />
                 <div id="card-body">
-                    <label>Введите логин</label><br />
-                    <input type="text" id="login" required /> <br /><br />
-                    <label>Введите пароль</label><br />
-                    <input type="password" id="password" required /><br /><br />
-                    <div id="card-body">
-                        <input type="submit" id="submitLogin" value="Логин" /><br /><br />
-                    </div>
+                    <input type="submit" id="submitLogin" value="Логин" /><br /><br />
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
+</div>
 
-    @*<script src='@Url.Content("~/Views/Scripts/Login.js")' type="text/javascript"></script>*@
+<script src="~/Scripts/Login.js"></script>
 
-    <script>
-        var tokenKey = "accessToken";
-        var loginKey = "userName";
 
-        async function getTokenAsync() {
-
-            const formData = new FormData();
-            formData.append("grant_type", "password");
-            formData.append("login", document.getElementById("login").value);
-            formData.append("password", document.getElementById("password").value);
-
-            const response = await fetch("token", {
-                method: "POST",
-                headers: { "Accept": "application/json" },
-                body: formData
-            });
-
-            const data = await response.json();
-
-            if (response.ok === true) {
-
-                localStorage.removeItem(tokenKey);
-                localStorage.removeItem(loginKey);
-
-                localStorage.setItem(tokenKey, data.access_token);
-                localStorage.setItem(loginKey, data.username);
-                console.log(data.access_token);
-                getHomePage();
-            }
-            else {
-                console.log("Error: ", response.status, data.errorText);
-                alert(data.messages[0]);
-            }
-        };
-
-        async function getHomePage() {
-
-            const token = localStorage.getItem(tokenKey);
-
-            location.href = await fetch("Home", {
-                headers: {
-                    "Accept": "application/json",
-                    "Authorization": "Bearer " + token
-                }
-            });
-
-        };
-
-        document.getElementById("submitLogin").addEventListener("click", e => {
-
-            e.preventDefault();
-            getTokenAsync();
-        });
-
-    </script>
-</body>

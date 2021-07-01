@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IBA.Task3.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class TestEditorController : BaseController
     {
         private const int NumberOfQuestions = 4;
@@ -26,7 +26,6 @@ namespace IBA.Task3.Controllers
             AnswerService = answerService;
         }
 
-        [Authorize]
         [HttpPost("/getTestEditorLink")]
         public IActionResult GetTestEditorLink()
         {

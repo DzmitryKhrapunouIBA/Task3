@@ -3,10 +3,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using IBA.Task3.DAL.Models;
 using IBA.Task3.DAL.Servises;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IBA.Task3.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private const int NumberOfQuestions = 4;

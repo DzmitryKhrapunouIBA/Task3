@@ -3,52 +3,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model IBA.Task3.TestModel
+<link href="~/Styles/Styles4.css" rel="stylesheet">
 
-<h2>Создание теста</h2>
-
-@using (Html.BeginForm(FormMethod.Post))
-{
-    @*@Html.AntiForgeryToken()*@
-
-    <div class="card-body">
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, "Название теста:")
-            @Html.TextBoxFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Attempts, "Выберите количество попыток:")
-            @Html.TextBoxFor(model => model.Attempts)
-            @Html.ValidationMessageFor(model => model.Attempts)
-        </div>       
-        <div class="form-group">
-            <input type="submit" name="submit" class="btn btn-danger" value="Далее" />
-        </div>
-    </div>
-}
-
-
-
-
-
-
-@*<div id="article">
+<div id="article">
+    <form name="createForm" id="createForm">
         <h2>Создание нового теста</h2>
         <div>
             <label>Название теста</label>
             <input id="testName" type="text" required /><br /><br />
         </div>
         <div>
-            <label>Выберите количество вопросов</label>
-            <input id="numberOfQuestions" type="number" min="1" required /><br /><br />
-        </div>
-        <div>
             <label>Выберите количество попыток</label>
             <input id="attempts" type="number" min="1" max="3" required /><br /><br />
         </div>
-        <div id="button">
-            <button type="submit" id="submit">Далее</button><br /><br /><br />
+        <div id="card-body">
+            <input type="submit" id="submit" value="Далее" /><br /><br />
         </div>
-    </div>*@
+    </form>
+    <div id="card-body">
+        <input type="submit" id="submitFinish" value="Завершить" /><br /><br />
+    </div>
+</div>
+
+<script src="~/Scripts/TestCreator.js"></script>
+
+
+
+
 

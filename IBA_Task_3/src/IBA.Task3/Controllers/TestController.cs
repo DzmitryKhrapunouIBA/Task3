@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IBA.Task3.Controllers
 {
     //[Authorize]
-    [Route("api/test")]
+    //[Route("api/test")]
     public partial class TestController : BaseController
     {
         private ITestService TestService { get; }
@@ -33,19 +33,25 @@ namespace IBA.Task3.Controllers
             TestResultService = testResultService;
         }
 
-        [HttpPost]
+        [Route("MyTests")]
+        public ActionResult GetMyTests()
+        {
+            return View("MyTests");
+        }
+
+        [Route("NewTest")]
         public ActionResult GetNewTest()
         {
-            return View("Test/TestCreator");
+            return View("TestCreator");
         }
 
-        [HttpPost]
+        [Route("NewQuestionWithAnswers")]
         public ActionResult GetNewQuestionWithAnswers()
         {
-            return View("Test/TestEditor");
+            return View("TestEditor");
         }
 
-        [HttpGet("")]
+        [HttpGet("User")]
         public async Task<IActionResult> Get(CancellationToken token = default)
             => await Get(GetUserId(), token);
 

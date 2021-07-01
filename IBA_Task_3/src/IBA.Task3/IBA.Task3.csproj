@@ -12,27 +12,32 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Scripts\Layout.js" />
+    <Content Remove="wwwroot\Scripts\Login.js" />
+    <Content Remove="wwwroot\Scripts\Registration.js" />
+    <Content Remove="wwwroot\Scripts\TestCreator.js" />
+    <Content Remove="wwwroot\Scripts\TestEditor.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Views\Styles\StyleMasterPage.scss" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Views\Styles\StyleMasterPage.scss" />
-    <Content Include="wwwroot1\homePage.html" />
-    <Content Include="wwwroot1\index.html" />
-    <Content Include="wwwroot1\loginPage.html" />
-    <Content Include="wwwroot1\loginPage1.html" />
-    <Content Include="wwwroot1\myTestsPage - Copy.html" />
-    <Content Include="wwwroot1\myTestsPage.html" />
-    <Content Include="wwwroot1\myTestsPageCop.html" />
-    <Content Include="wwwroot1\registrationPage.html" />
-    <Content Include="wwwroot1\styles\styles.scss" />
-    <Content Include="wwwroot1\styles\Styles1.css" />
-    <Content Include="wwwroot1\styles\Styles2.css" />
-    <Content Include="wwwroot1\styles\Styles3.css" />
-    <Content Include="wwwroot1\styles\Styles4.css" />
-    <Content Include="wwwroot1\testAchievementsPage.html" />
-    <Content Include="wwwroot1\testCreatorPage.html" />
-    <Content Include="wwwroot1\testEditorPage.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Scripts\Layout.js" />
+    <None Include="wwwroot\Scripts\TestCreator.js" />
+    <None Include="wwwroot\Scripts\TestEditor.js" />
+    <None Include="wwwroot\Scripts\Registration.js" />
+    <None Include="wwwroot\Scripts\Login.js" />
+    <None Include="wwwroot\Styles\styles.scss" />
+    <None Include="wwwroot\Styles\Styles1.css" />
+    <None Include="wwwroot\Styles\Styles2.css" />
+    <None Include="wwwroot\Styles\Styles3.css" />
+    <None Include="wwwroot\Styles\Styles4.css" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,56 @@
+﻿
+@model IEnumerable<IBA.Task3.TestModel>
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Каталог тестов";
+}
+
+<h2>Каталог тестов</h2>
+
+<p>
+    @Html.ActionLink("Создать тест ", "NewTest")
+</p>
+
+@*<form method="get">
+        <div class="form-inline">
+            <label class="control-label">Тест: </label>
+            @Html.DropDownList("team", Model.Teams as SelectList,
+            htmlAttributes: new { @class = "form-control" })
+
+            <label class="control-label">Позиция игрока: </label>
+            @Html.DropDownList("position", Model.Positions as SelectList,
+            htmlAttributes: new { @class = "form-control" })
+
+            <input type="submit" value="Фильтр" class="btn btn-default" />
+        </div>
+    </form>*@
+
+<table>
+    <tr>
+        <th>Название теста</th>
+        <th>Количество попыток</th>
+        <th></th>
+    </tr>
+
+    @*@foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Attempts)
+            </td>
+            <td>
+                @Html.ActionLink("Редактировать", "Edit") |
+                @Html.ActionLink("Удалить", "Delete")
+            </td>
+        </tr>
+    }*@
+</table>
+
