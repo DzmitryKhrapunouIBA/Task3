@@ -20,14 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\Styles\StyleMasterPage.scss" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\Styles\StyleMasterPage.scss" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\Scripts\Layout.js" />
     <None Include="wwwroot\Scripts\TestCreator.js" />
     <None Include="wwwroot\Scripts\TestEditor.js" />

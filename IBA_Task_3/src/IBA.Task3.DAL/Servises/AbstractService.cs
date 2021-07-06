@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using IBA.Task3.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,7 +11,7 @@ namespace IBA.Task3.DAL.Servises
 {
     public abstract class AbstractService<TContext, T> : BaseService, ICrudService<T>
         where TContext : DbContext
-        where T : class, Models.IEntity
+        where T : class, IEntity
     {
         protected TContext Context { get; }
 
@@ -29,7 +31,7 @@ namespace IBA.Task3.DAL.Servises
             return await Entry.ToListAsync(token);
         }
 
-        public virtual async Task<IEnumerable<T>> AllAsync(Func<T, bool> func, CancellationToken token = default, params System.Linq.Expressions.Expression<System.Func<T, object>>[] includes)
+        public virtual async Task<IEnumerable<T>> AllAsync(Func<T, bool> func, CancellationToken token = default, params Expression<Func<T, object>>[] includes)
         {
             InitTokenThrow(token);
 
@@ -123,7 +125,7 @@ namespace IBA.Task3.DAL.Servises
         /// </returns>
         /// <exception cref="ArgumentNullException">Throw at single or default </exception>
         /// <exception cref="InvalidOperationException">Throw at single or default </exception>
-        public virtual async Task<T> GetAsync(System.Linq.Expressions.Expression<Func<T, bool>> func, CancellationToken token = default)
+        public virtual async Task<T> GetAsync(Expression<Func<T, bool>> func, CancellationToken token = default)
         {
             return await Entry.SingleOrDefaultAsync(func, token);
         }
@@ -134,7 +136,6 @@ namespace IBA.Task3.DAL.Servises
             {
                 if (item == null)
                     throw new ArgumentNullException(nameof(T));
-
 
                 var entry = Context.Set<T>().Update(item);
                 await Context.SaveChangesAsync(token);

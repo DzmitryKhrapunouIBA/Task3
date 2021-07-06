@@ -1,19 +1,16 @@
 ﻿var testNameKey = "testName";
-var numberOfQuestionsKey = "numberOfQuestions";
 
 /*--------------------------------------*/
 
 async function postTestDataAsync() {
 
     const formData = new FormData();
-    formData.append("testName", document.getElementById("testName").value);
-    formData.append("numberOfQuestions", document.getElementById("numberOfQuestions").value);
+    formData.append("Name", document.getElementById("testName").value);
     formData.append("attempts", document.getElementById("attempts").value);
-    formData.append("login", localStorage.getItem(loginKey));
 
     const token = localStorage.getItem(tokenKey);
 
-    const response1 = await fetch("Create", {
+    const response = await fetch("Create", {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -22,25 +19,24 @@ async function postTestDataAsync() {
         body: formData
     });
 
-    const data2 = await response1.json();
+    const data2 = await response.json();
 
-    if (response1.ok === true) {
+    if (response.ok === true) {
 
         localStorage.setItem(testNameKey, document.getElementById("name").value);
-        localStorage.setItem(numberOfQuestionsKey, document.getElementById("numberOfQuestions").value);
-        goToNewUrl();
+        goToNewUrl("NewQuestionWithAnswers");
     }
     else {
 
-        console.log("Error: ", response1.status, data2.errorText);
+        console.log("Error: ", response.status, data2.errorText);
         alert(data2.errorText);
     }
 };
 
-async function goToNewUrl() {
+async function goToNewUrl(url) {
     const token = localStorage.getItem(tokenKey);
 
-    const response2 = await fetch("/getTestEditorLink", {
+    const response = await fetch(url, {
         method: "POST",
         headers: {
             "Accept": "application/json",
@@ -48,12 +44,19 @@ async function goToNewUrl() {
         }
     });
 
-    const url = await response2.json();
-    location.href = url;
+    location.href = await response;
 };
 
 document.getElementById("submit").addEventListener("click", e => {
 
     e.preventDefault();
     postTestDataAsync();
+});
+
+document.getElementById("submitFinish").addEventListener("click", e => {
+
+    e.preventDefault();
+    localStorage.setItem(testNameKey, "")
+    goToNewUrl("Home");
+    
 });

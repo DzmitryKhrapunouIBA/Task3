@@ -1,9 +1,9 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using IBA.Task3.DAL.Models;
-using IBA.Task3.DAL.Servises;
-using IBA.Task3.Services;
+using IBA.Task3.DAL.Servises.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,7 +39,9 @@ namespace IBA.Task3.Controllers
             return View("MyTests");
         }
 
-        [Route("NewTest")]
+        //[Route("NewTest")]
+        [AllowAnonymous]
+        [HttpGet("NewTest")]
         public ActionResult GetNewTest()
         {
             return View("TestCreator");
@@ -90,7 +92,7 @@ namespace IBA.Task3.Controllers
             var assignments = await TestAssignmentService.AllAsync(a => a.UserId == userId, token, x=> x.Test);
 
             if (!assignments.Any())
-                return NotFound(ResultBase.Failure(System.Net.HttpStatusCode.NotFound));
+                return NotFound(ResultBase.Failure(HttpStatusCode.NotFound));
 
             return Ok(Result<Test>.Ok(assignments.Select(x => x.Test)));
         }
@@ -111,25 +113,27 @@ namespace IBA.Task3.Controllers
             var assignments = await TestResultService.AllAsync(a => a.UserId == userId, token, x => x.Test);
 
             if (!assignments.Any())
-                return NotFound(ResultBase.Failure(System.Net.HttpStatusCode.NotFound));
+                return NotFound(ResultBase.Failure(HttpStatusCode.NotFound));
 
             return Ok(Result<Test>.Ok(assignments.Select(x => x.Test)));
         }
 
         //------------------------------------
+        [Authorize]
         [HttpPost("Create")]
         public async Task<IActionResult> Create(TestModel model, CancellationToken token = default)
         {
             var tests = await TestService.AllAsync(t => t.Name == model.Name && t.UserId == GetUserId(), token);
+            var user = await UserService.GetAsync(GetUserId(), token);
 
-            //if (tests.Any())
-            //    return BadRequest(ResultBase.BadRequest("Тест с таким именем уже существует"));
+            if (tests.Any())
+                return BadRequest(ResultBase.BadRequest("Тест с таким именем уже существует"));
 
             var entry = await TestService.CreateAsync(
                         new Test(model.Name, GetUserId(), model.Attempts), token);
 
             return Ok(ResultModel<TestCreateModel>.Ok(
-                      new TestCreateModel() { Name = entry.Name, Attempts = entry.Attempts, UserName = "Dima" /*Login*/ }));
+                      new TestCreateModel() { Name = entry.Name, Attempts = entry.Attempts, UserName = Login }));
         }
 
         [HttpPost("Edit")]

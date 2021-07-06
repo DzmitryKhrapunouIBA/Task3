@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
@@ -51,12 +52,12 @@ namespace IBA.Task3
     public class Result<T> : ResultBase
     {
         [JsonProperty("items")]
-        public System.Collections.Generic.IEnumerable<T> Items { get; set; }
+        public IEnumerable<T> Items { get; set; }
 
         [JsonProperty("count")]
         public int? Count { get; set; }
 
-        public static Result<T> Ok(System.Collections.Generic.IEnumerable<T> items, int? count = default(int?), HttpStatusCode code = HttpStatusCode.OK)
+        public static Result<T> Ok(IEnumerable<T> items, int? count = default(int?), HttpStatusCode code = HttpStatusCode.OK)
         {
             return new Result<T>() { Success = true, Items = items, Count = count, ResponceCode = (int)code };
         }

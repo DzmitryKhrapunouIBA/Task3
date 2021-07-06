@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace IBA.Task3.DAL.Servises
 {
@@ -36,7 +37,7 @@ namespace IBA.Task3.DAL.Servises
         /// <param name="token"></param>
         /// <exception cref="OperationCanceledException"></exception>
         /// <exception cref="ObjectDisposedException"></exception>
-        protected void InitTokenThrow(System.Threading.CancellationToken token)
+        protected void InitTokenThrow(CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
             ThrowIfDisposed();

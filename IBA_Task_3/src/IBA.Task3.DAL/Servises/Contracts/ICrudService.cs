@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq.Expressions;
+using System;
 
 namespace IBA.Task3.DAL.Servises
 {
@@ -19,7 +21,7 @@ namespace IBA.Task3.DAL.Servises
         /// <param name="func">Функция поиска.</param>
         /// <param name="token">Токен отмены.</param>
         /// <returns>Коллекция найденных элементов.</returns>
-        Task<IEnumerable<T>> AllAsync(System.Func<T, bool> func, CancellationToken token = default(CancellationToken), params System.Linq.Expressions.Expression<System.Func<T, object>>[] includes);
+        Task<IEnumerable<T>> AllAsync(Func<T, bool> func, CancellationToken token = default(CancellationToken), params Expression<Func<T, object>>[] includes);
 
         /// <summary>
         /// Получение единственной сущности по коду
@@ -27,8 +29,8 @@ namespace IBA.Task3.DAL.Servises
         /// <param name="id">Код сущности.</param>
         /// <param name="token">Токен отмены.</param>
         /// <returns>Найденный элемент.</returns>
-        /// <exception cref="System.ArgumentNullException">Single or default throw</exception>
-        /// <exception cref="System.InvalidOperationException">Single or defaut throw</exception>
+        /// <exception cref="ArgumentNullException">Single or default throw</exception>
+        /// <exception cref="InvalidOperationException">Single or defaut throw</exception>
         Task<T> GetAsync(int id, CancellationToken token = default(CancellationToken));
 
         /// <summary>
@@ -39,9 +41,9 @@ namespace IBA.Task3.DAL.Servises
         /// <returns>
         /// Возвращает найденный элемент.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException">Throw at single or default </exception>
-        /// <exception cref="System.InvalidOperationException">Throw at single or default </exception>
-        Task<T> GetAsync(System.Linq.Expressions.Expression<System.Func<T, bool>> func, CancellationToken token = default);
+        /// <exception cref="ArgumentNullException">Throw at single or default </exception>
+        /// <exception cref="InvalidOperationException">Throw at single or default </exception>
+        Task<T> GetAsync(Expression<Func<T, bool>> func, CancellationToken token = default);
 
         /// <summary>
         /// Асинхронное создание сущности.
@@ -51,7 +53,7 @@ namespace IBA.Task3.DAL.Servises
         /// <returns>
         /// Возвращает объект созданной сущности.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException">If creation item is null or empty</exception>
+        /// <exception cref="ArgumentNullException">If creation item is null or empty</exception>
         /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateException">Save context operation exception</exception>
         /// <exception cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException">Save context operation exception</exception>
         Task<T> CreateAsync(T item, CancellationToken token = default(CancellationToken));

@@ -36,15 +36,18 @@ async function getHomePage() {
 
     const token = localStorage.getItem(tokenKey);
 
-    location.href = 'Home';
-    //const response = await fetch("Home", {
-    //    headers: {
-    //        "Accept": "application/json",
-    //        "Authorization": "Bearer " + token
-    //    }
-    //});
+/*    location.href = 'Home';*/
+    const response = await fetch("Home", {
+        headers: {
+            "Accept": "application/json",
+            "Authorization": "Bearer " + token
+        }
+    });
 
-    //location.href = response;
+    location.href = response;
+
+    
+
     //alert(dat);
 
     //if (response.ok === true) {

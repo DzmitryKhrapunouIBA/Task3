@@ -1,14 +1,13 @@
-﻿using IBA.Task3.DAL.Models;
+﻿using IBA.Task3.DAL.Context;
+using IBA.Task3.DAL.Models;
+using IBA.Task3.DAL.Servises.Contracts;
 
 namespace IBA.Task3.DAL.Servises
 {
-    public class AnswerService : AbstractService<Context.AppContext, Answer>, IAnswerService
+    public class AnswerService : AbstractService<AppContext, Answer>, IAnswerService
     {
-        public AnswerService(Context.AppContext context) : base(context)
-        {
+        public AnswerService(AppContext context) : base(context)
+        { 
         }
     }
-
-    public interface IAnswerService : ICrudService<Answer>
-    { }
 }

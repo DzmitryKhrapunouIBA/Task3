@@ -1,13 +1,13 @@
-﻿using IBA.Task3.DAL.Models;
+﻿using IBA.Task3.DAL.Context;
+using IBA.Task3.DAL.Models;
+using IBA.Task3.DAL.Servises.Contracts;
 
 namespace IBA.Task3.DAL.Servises
 {
-    public class TestService : AbstractService<Context.AppContext, Test>, ITestService
+    public class TestService : AbstractService<AppContext, Test>, ITestService
     {
-        public TestService(Context.AppContext context) : base(context)
-        {
+        public TestService(AppContext context) : base(context)
+        { 
         }
     }
-
-    public interface ITestService : ICrudService<Test> { }
 }

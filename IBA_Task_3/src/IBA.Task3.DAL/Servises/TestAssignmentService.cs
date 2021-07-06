@@ -4,10 +4,13 @@ using System.Linq;
 using IBA.Task3.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
+using IBA.Task3.DAL.Servises.Contracts;
+using System;
+using System.Linq.Expressions;
 
 namespace IBA.Task3.DAL.Servises
 {
-    public class TestAssignmentService :  ITestAssignmentService
+    public class TestAssignmentService : ITestAssignmentService
     {
         private Context.AppContext Context { get; }
 
@@ -16,7 +19,7 @@ namespace IBA.Task3.DAL.Servises
             Context = context;
         }
 
-        public virtual async Task<IEnumerable<TestAssignment>> AllAsync(System.Func<TestAssignment, bool> func, CancellationToken token = default, params System.Linq.Expressions.Expression<System.Func<TestAssignment, object>>[] includes)
+        public virtual async Task<IEnumerable<TestAssignment>> AllAsync(Func<TestAssignment, bool> func, CancellationToken token = default, params Expression<Func<TestAssignment, object>>[] includes)
         {
             var query = Context.Set<TestAssignment>().AsNoTracking();
 
@@ -28,11 +31,5 @@ namespace IBA.Task3.DAL.Servises
 
             return await query.ToListAsync(token);
         }
-
-    }
-
-    public interface ITestAssignmentService 
-    {
-        Task<IEnumerable<TestAssignment>> AllAsync(System.Func<TestAssignment, bool> func, CancellationToken token = default, params System.Linq.Expressions.Expression<System.Func<TestAssignment, object>>[] includes);
     }
 }

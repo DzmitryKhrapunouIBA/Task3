@@ -4,15 +4,14 @@
     {
         public string Name { get; set; }
         public bool CorrectAnswer { get; set; }
-        public Question Question { get; set; }
-
         public int QuestionId { get; set; }
+        public Question Question { get; set; }
 
         public Answer() { }
 
-        public Answer(int questionId, string name, bool correctAnswer)
+        public Answer(Question question, string name, bool correctAnswer)
         {
-            QuestionId = questionId;
+            Question = question;
             Name = name;
             CorrectAnswer = correctAnswer;
         }

@@ -1,4 +1,6 @@
-﻿namespace IBA.Task3.DAL.Models
+﻿using System.Collections.Generic;
+
+namespace IBA.Task3.DAL.Models
 {
     public class TestAssignment : Entity
     {
@@ -9,12 +11,14 @@
         public Test Test { get; set; }
         public User User { get; set; }
 
+        public IEnumerable<Test> Tests { get; set; }
+
         public TestAssignment() { }
 
-        public TestAssignment(int testId, int userId)
+        public TestAssignment(User user)
         {
-            TestId = testId;
-            UserId = userId;
+            User = user;
+            Tests = new List<Test>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using IBA.Task3.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace IBA.Task3.DAL.Context
 {
@@ -13,8 +14,7 @@ namespace IBA.Task3.DAL.Context
         /// <param name="builder">Объект построитель связей для контекста.</param>
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Models.TestAssignment>().HasOne(t => t.Test).WithMany().HasForeignKey(x => x.TestId);
-            
+            builder.Entity<TestAssignment>().HasOne(t => t.Test).WithMany().HasForeignKey(x => x.TestId);
 
             base.OnModelCreating(builder);
         }

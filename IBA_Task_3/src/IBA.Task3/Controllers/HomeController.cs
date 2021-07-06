@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IBA.Task3.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
 

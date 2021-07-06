@@ -1,6 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using IBA.Task3.DAL.Servises;
+using IBA.Task3.DAL.Models;
+using IBA.Task3.DAL.Servises.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +13,7 @@ namespace IBA.Task3.Controllers
     /// Контроллер авторизации
     /// </summary>
     [Authorize]
-    public class LoginController : Controller
+    public class AuthenticationController : Controller
     {
         private IUserService UserService { get; }
 
@@ -19,7 +22,7 @@ namespace IBA.Task3.Controllers
         /// <summary>
         /// </summary>
         /// <param name="context"></param>
-        public LoginController(IUserService userService, IJwtGenerator jwtGenerator)
+        public AuthenticationController(IUserService userService, IJwtGenerator jwtGenerator)
         {
             UserService = userService;
             JwtGenerator = jwtGenerator;
@@ -30,6 +33,13 @@ namespace IBA.Task3.Controllers
         public IActionResult Login()
         {
             return View("Login");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("registration")]
+        public IActionResult Registration()
+        {
+            return View("Registration");
         }
 
         /// <summary>
@@ -62,9 +72,40 @@ namespace IBA.Task3.Controllers
 
                 return Json(response);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 return Json(ResultBase.Failure(e?.Message));
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("registration")]
+        public async Task<IActionResult> Registration(RegistrationModel model, CancellationToken token = default)
+        {
+            try
+            {
+                if (model == null || !ModelState.IsValid)
+                    return BadRequest(ResultBase.BadRequest(ModelState));
+
+                var user = await UserService.GetAsync(u => u.Login == model.Login, token);
+
+                if (user != null)
+                    return BadRequest(ResultBase.BadRequest("Пользователь с таким Логином уже зарегестрирован"));
+
+                var entry = await UserService.CreateAsync(new User()
+                {
+                    FirstName = model.Firstname,
+                    LastName = model.Lastname,
+                    Login = model.Login,
+                    SurName = model.Surname,
+                    Password = AuthService.GetHash(model.Password),
+                }, token);
+
+                return Json(ResultBase.Ok(HttpStatusCode.OK));
+            }
+            catch (Exception e)
+            {
+                return Json(ResultBase.Failure(HttpStatusCode.BadRequest, e?.Message));
             }
         }
     }

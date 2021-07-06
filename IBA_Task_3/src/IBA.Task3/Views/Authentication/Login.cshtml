@@ -1,11 +1,14 @@
 ﻿@{
     ViewBag.Title = "Аутентификация";
-    Layout = "~/Views/Login/_Layout.cshtml";
+    Layout = "~/Views/Authentication/_Layout.cshtml";
 
 }
 
 @Html.AntiForgeryToken()
 
+<div id="header">
+    <h1>Вход на сайт</h1>
+</div>
 <div id="loginForm">
     <div>
         <form>

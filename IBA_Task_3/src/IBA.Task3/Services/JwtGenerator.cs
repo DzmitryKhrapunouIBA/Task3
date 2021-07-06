@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using IBA.Task3.DAL.Models;
 using IBA.Task3.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,11 +21,7 @@ namespace IBA.Task3
 
         public JwtGenerator(IConfiguration config)
         {
-            _key = new SymmetricSecurityKey(
-                System.Text.Encoding.UTF8.GetBytes(
-                    config.GetValue<string>("Authentication:TokenValidationParameters:SecretKey")
-                    )
-                );
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetValue<string>("Authentication:TokenValidationParameters:SecretKey")));
             _expires = config.GetValue<TimeSpan>("Authentication:Expires");
             _issuer = config.GetValue<string>("Authentication:TokenValidationParameters:ValidIssuer");
             _audience = config.GetValue<string>("Authentication:TokenValidationParameters:ValidAudience");
@@ -37,15 +35,16 @@ namespace IBA.Task3
             };
 
             var credentials = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
+            var now = DateTime.UtcNow;
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Issuer = _issuer,
                 Audience = _audience,
                 Subject = new ClaimsIdentity(claims),
-                Expires = TimeService.Now.Add(_expires),
+                Expires = now.Add(_expires),
                 SigningCredentials = credentials,
-                NotBefore = TimeService.Now
+                NotBefore = now
             };
             var tokenHandler = new JwtSecurityTokenHandler();
 
