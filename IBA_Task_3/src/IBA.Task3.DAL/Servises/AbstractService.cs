@@ -14,14 +14,16 @@ namespace IBA.Task3.DAL.Servises
         where T : class, IEntity
     {
         protected TContext Context { get; }
-
         protected IQueryable<T> Entry { get; }
+        protected IEnumerable<T> Test { get; }
 
         public AbstractService(TContext context) : base() {
 
             Context = context;
 
             Entry = Context.Set<T>().AsQueryable<T>().AsNoTracking();
+
+            Test = Context.Set<T>().AsNoTracking();
         }
 
         public virtual async Task<IEnumerable<T>> AllAsync(CancellationToken token = default)
@@ -36,13 +38,17 @@ namespace IBA.Task3.DAL.Servises
             InitTokenThrow(token);
 
             var query = Entry;
+            var tests = Test;
+
+            tests = new List<T>();
+
             if (includes != null && includes.Any())
                 query = includes.Aggregate(query, (x, y) => x.Include(y));
 
             if (func != null)
-                query = (IQueryable<T>)query.Where(func);
+                tests = query.Where(func).ToList();
 
-            return await query.ToListAsync(token);
+            return await Task.FromResult(tests); 
         }
 
         /// <summary>

@@ -19,17 +19,26 @@ async function postTestDataAsync() {
         body: formData
     });
 
-    const data2 = await response.json();
+    const data = await response.json();
 
     if (response.ok === true) {
 
-        localStorage.setItem(testNameKey, document.getElementById("name").value);
-        goToNewUrl("NewQuestionWithAnswers");
+        localStorage.setItem(testNameKey, document.getElementById("testName").value);
+
+        response = await fetch(NewQuestionWithAnswers, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Authorization": "Bearer " + token
+            }
+        });
+
+        location.href = await response;
     }
     else {
 
-        console.log("Error: ", response.status, data2.errorText);
-        alert(data2.errorText);
+        console.log("Error: ", response.status, data.errorText);
+        alert(data.messages[0]);
     }
 };
 

@@ -18,9 +18,11 @@ namespace IBA.Task3.Controllers
             return View();
         }
 
-        [Route("Home")]
+        //[AllowAnonymous]
+        [HttpGet("Home")]
         public IActionResult Home()
         {
+            //return RedirectToPage("Home");
             return View("Home");
         }
 

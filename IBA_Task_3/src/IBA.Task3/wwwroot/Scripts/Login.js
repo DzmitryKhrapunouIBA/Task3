@@ -36,31 +36,48 @@ async function getHomePage() {
 
     const token = localStorage.getItem(tokenKey);
 
-/*    location.href = 'Home';*/
-    const response = await fetch("Home", {
+    //$.ajax({
+    //    type: 'GET',
+    //    url: 'Home',
+    //    beforeSend: function (xhr) {
+
+    //        xhr.setRequestHeader("Authorization", "Bearer " + token);
+    //    },
+    //    success: function (data) {
+    //        alert(data);
+    //    },
+    //    fail: function (data) {
+    //        alert(data);
+    //    }
+
+
+
+    /*location.href = 'Home';*/
+    location.href = await fetch("Home", {
         headers: {
             "Accept": "application/json",
             "Authorization": "Bearer " + token
         }
     });
 
-    location.href = response;
+    
+    /*location = response;*/
 
     
 
-    //alert(dat);
+//    //alert(dat);
 
-    //if (response.ok === true) {
+//    //if (response.ok === true) {
 
-    //    location.href = dat;
-    //}
-    //else {
-    //    console.log("Error: ", response.status, data.errorText);
-    //    alert(data.errorText);
-    //}
+//    //    location.href = dat;
+//    //}
+//    //else {
+//    //    console.log("Error: ", response.status, data.errorText);
+//    //    alert(data.errorText);
+//    //}
 
 
-    /* alert(href.url);*/
+//    /* alert(href.url);*/
 
 };
 

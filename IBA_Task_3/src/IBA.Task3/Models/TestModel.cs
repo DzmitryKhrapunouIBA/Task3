@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace IBA.Task3
 {
-    public class TestBase 
+    public class TestBase
     {
         [Required]
         [JsonProperty("name")]
@@ -15,15 +15,9 @@ namespace IBA.Task3
         public int Attempts { get; set; }
     }
 
-    public class TestCreateModel
+    public class TestCreateModel : TestModel
     {
-        [JsonProperty("name")]
-        public string Name { get; set; }
-
         public string UserName { get; set; }
-
-        [JsonProperty("attempts")]
-        public int Attempts { get; set; }
     }
 
     public class TestUpdateModel : TestBase
@@ -33,23 +27,18 @@ namespace IBA.Task3
         public string Question { get; set; }
 
         [Required]
-        [JsonProperty("answer1")]
-        public string Answer1 { get; set; }
-
-        [Required]
-        [JsonProperty("answer2")]
-        public string Answer2 { get; set; }
-
-        [Required]
-        [JsonProperty("answer3")]
-        public string Answer3 { get; set; }
-
-        [Required]
-        [JsonProperty("answer4")]
-        public string Answer4 { get; set; }
-
-        [Required]
         [JsonProperty("correctAnswer")]
         public int CorrectAnswer { get; set; }
+
+        [Required]
+        [JsonProperty("answers")]
+        public string[] Answers { get; set; }
+    }
+
+    public class TestViewModel : TestModel
+    {
+        [Required]
+        [JsonProperty("numberOfQuestions")]
+        public int NumberOfQuestions { get; set; }
     }
 }

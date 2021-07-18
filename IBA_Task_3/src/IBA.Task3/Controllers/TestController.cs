@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +23,7 @@ namespace IBA.Task3.Controllers
 
         private ITestResultService TestResultService { get; }
 
-        public TestController(ITestService testService, IUserService userService, IQuestionService questionService, 
+        public TestController(ITestService testService, IUserService userService, IQuestionService questionService,
                               IAnswerService answerService, ITestAssignmentService testAssignmentService,
                               ITestResultService testResultService)
         {
@@ -33,10 +35,11 @@ namespace IBA.Task3.Controllers
             TestResultService = testResultService;
         }
 
-        [Route("MyTests")]
+        [AllowAnonymous]
+        [Route("GetMyTests")]
         public ActionResult GetMyTests()
         {
-            return View("MyTests");
+            return View("GetMyTests");
         }
 
         //[Route("NewTest")]
@@ -47,7 +50,8 @@ namespace IBA.Task3.Controllers
             return View("TestCreator");
         }
 
-        [Route("NewQuestionWithAnswers")]
+        [AllowAnonymous]
+        [HttpGet("NewQuestionWithAnswers")]
         public ActionResult GetNewQuestionWithAnswers()
         {
             return View("TestEditor");
@@ -57,19 +61,47 @@ namespace IBA.Task3.Controllers
         public async Task<IActionResult> Get(CancellationToken token = default)
             => await Get(GetUserId(), token);
 
-        [HttpGet("user/{userId}")]
-        public async Task<IActionResult> Get(int userId, CancellationToken token = default)
+        //[HttpGet("user/{userId}")]
+        //public async Task<IActionResult> Get(int userId, CancellationToken token = default)
+        //{
+        //    try
+        //    {
+        //        var test = await TestService.GetAsync(t => t.UserId == userId, token);
+        //        if (test == null)
+        //            return NotFound(ResultBase.NotFound());
+
+        //        return Ok(ResultModel<Test>.Ok(test));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Json(ResultBase.Failure(e?.Message));
+        //    }
+        //}
+
+        /// <summary>
+        /// Получаем все тесты пользователя.
+        /// </summary>
+        /// <param name="userId">Код пользователя.</param>
+        /// <param name="token">Токен отмены.</param>
+        /// <returns>Возвращает список тестов.</returns>
+
+        [AllowAnonymous]
+        [HttpGet("MyTests")]
+        public async Task<IActionResult> MyTests(CancellationToken token = default)
         {
             try
             {
-                var test = await TestService.GetAsync(t => t.UserId == userId, token);
-                if (test == null)
+                //var user = await UserService.GetAsync(GetUserId(), token);
+                //var test = await TestService.GetAsync(t => t.UserId == GetUserId(), token);
+                var tests = await TestService.AllAsync(t => t.UserId == 2, token, x => x.Questions);
+                //Team team = db.Teams.Include(t => t.Players).FirstOrDefault(t => t.Id == id);
+                if (tests == null)
                     return NotFound(ResultBase.NotFound());
 
-                return Ok(ResultModel<Test>.Ok(test));
+                return View(tests);
             }
-            catch (System.Exception e)
-            { 
+            catch (Exception e)
+            {
                 return Json(ResultBase.Failure(e?.Message));
             }
         }
@@ -89,7 +121,7 @@ namespace IBA.Task3.Controllers
             if (!userId.HasValue)
                 userId = GetUserId();
 
-            var assignments = await TestAssignmentService.AllAsync(a => a.UserId == userId, token, x=> x.Test);
+            var assignments = await TestAssignmentService.AllAsync(a => a.UserId == userId, token, x => x.Test);
 
             if (!assignments.Any())
                 return NotFound(ResultBase.Failure(HttpStatusCode.NotFound));
@@ -123,8 +155,8 @@ namespace IBA.Task3.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> Create(TestModel model, CancellationToken token = default)
         {
-            var tests = await TestService.AllAsync(t => t.Name == model.Name && t.UserId == GetUserId(), token);
-            var user = await UserService.GetAsync(GetUserId(), token);
+            //var user = await UserService.GetAsync(GetUserId(), token);
+            var tests = await TestService.AllAsync(t => t.UserId == GetUserId() && t.Name == model.Name, token);
 
             if (tests.Any())
                 return BadRequest(ResultBase.BadRequest("Тест с таким именем уже существует"));
@@ -150,13 +182,12 @@ namespace IBA.Task3.Controllers
                     new Question() { TestId = test.Id, Name = model.Question }
                 );
 
-            int idx = 1;
-            foreach (var answer in new string[] { model.Answer1, model.Answer2, model.Answer3, model.Answer4 })
+            for (int i = 0; i < model.Answers.Count(); i++)
             {
                 await AnswerService.CreateAsync(
-                        new Answer() { Name = answer, QuestionId = question.Id, CorrectAnswer = model.CorrectAnswer == idx },
+                        new Answer() { Name = model.Answers[i], QuestionId = question.Id, CorrectAnswer = model.CorrectAnswer == i + 1 },
                         token
-                    );
+                     );
             }
 
             return Ok();
@@ -176,16 +207,42 @@ namespace IBA.Task3.Controllers
                     new Question() { TestId = test.Id, Name = model.Question }
                 );
 
-            int idx = 1;
-            foreach (var answer in new string[] { model.Answer1, model.Answer2, model.Answer3, model.Answer4 })
+            for (int i = 0; i < model.Answers.Count(); i++)
             {
                 await AnswerService.CreateAsync(
-                        new Answer() { Name = answer, QuestionId = question.Id, CorrectAnswer = model.CorrectAnswer == idx },
+                        new Answer() { Name = model.Answers[i], QuestionId = question.Id, CorrectAnswer = model.CorrectAnswer == i + 1 },
                         token
-                    );
+                     );
             }
 
             return Ok();
         }
+
+        [AllowAnonymous]
+        [HttpGet("Delete/{userId?}")]
+        public async Task<IActionResult> Delete(int? id, CancellationToken token = default)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var test = await TestService.GetAsync(t => t.Id == id, token);
+            
+            if (test == null)
+            {
+                return NotFound();
+            }
+
+            return View(test);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Delete/{userId?}")]
+        public async Task<bool> DeleteConfirmed(int id, CancellationToken token = default)
+        {
+            return await TestService.DeleteAsync(id, token);
+        }
+
     }
 }

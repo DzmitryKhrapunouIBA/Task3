@@ -18,10 +18,17 @@ async function postTestDataAsync() {
     const formData = new FormData();
     formData.append("name", localStorage.getItem(testNameKey));
     formData.append("question", document.getElementById("question").value);
-    formData.append("answer1", document.getElementById("answer1").value);
-    formData.append("answer2", document.getElementById("answer2").value);
-    formData.append("answer3", document.getElementById("answer3").value);
-    formData.append("answer4", document.getElementById("answer4").value);
+
+    var answers = [];
+    answers[0] = document.getElementById("answer1").value;
+    answers[1] = document.getElementById("answer2").value;
+    answers[2] = document.getElementById("answer3").value;
+    answers[3] = document.getElementById("answer4").value;
+
+    for (let item of answers) {
+        formData.append("Answers", item);
+    }
+
     formData.append("correctAnswer", document.getElementById("correctAnswer").value);
 
     const token = localStorage.getItem(tokenKey);
@@ -75,4 +82,10 @@ document.getElementById("submitEdit").addEventListener("click", e => {
 
     e.preventDefault();
     postTestDataAsync();
+});
+
+document.getElementById("submitFinish").addEventListener("click", e => {
+
+    e.preventDefault();
+    goToNewUrl();
 });

@@ -1,0 +1,19 @@
+﻿
+@model IEnumerable<IBA.Task3.TestViewModel>
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Каталог тестов";
+}
+
+<h2>Каталог тестов</h2>
+
+<div id="card-body">
+    <input type="submit" id="submitEdit" value="Далее" /><br /><br />
+</div>
+
+<script src="~/Scripts/GetMyTests.js"></script>
