@@ -35,17 +35,67 @@ namespace IBA.Task3.Controllers
             TestResultService = testResultService;
         }
 
+        /// <summary>
+        /// Получаем все тесты пользователя.
+        /// </summary>
+        /// <param name="userId">Код пользователя.</param>
+        /// <param name="token">Токен отмены.</param>
+        /// <returns>Возвращает список тестов.</returns>
+
         [AllowAnonymous]
-        [Route("GetMyTests")]
-        public ActionResult GetMyTests()
+        [HttpGet("MyTests")]
+        public async Task<IActionResult> GetMyTests(CancellationToken token = default)
         {
-            return View("GetMyTests");
+            try
+            {
+                //var user = await UserService.GetAsync(GetUserId(), token);
+                //var test = await TestService.GetAsync(t => t.UserId == GetUserId(), token);
+                var tests = await TestService.AllAsync(t => t.UserId == 2, token, x => x.Questions);
+
+                if (tests == null)
+                    return NotFound(ResultBase.Failure(HttpStatusCode.NotFound));
+
+                return View("MyTests", tests);
+            }
+            catch (Exception e)
+            {
+                return Json(ResultBase.Failure(e?.Message));
+            }
         }
 
-        //[Route("NewTest")]
+        /// <summary>
+        /// Получаем все назначенные тесты не пользователя.
+        /// Если код пользователя не указан - получаем все назначенные тесты текущего пользователя.
+        /// </summary>
+        /// <param name="userId">Код пользователя, кому назначены тесты.</param>
+        /// <param name="token">Токен отмены.</param>
+        /// <returns>Возвращает список назначенных тестов.</returns>
+
+        [AllowAnonymous]
+        [HttpGet("Assignment/{userId?}")]
+        public async Task<IActionResult> GetAllAssignedTests(int? userId, CancellationToken token = default)
+        {
+            try
+            {
+                if (!userId.HasValue)
+                    userId = /*GetUserId()*/ 2;
+
+                var assignments = await TestAssignmentService.AllAsync(a => a.UserId == userId, token, x => x.Test);
+
+                if (!assignments.Any())
+                    return NotFound(ResultBase.Failure(HttpStatusCode.NotFound));
+
+                return View("MyAssignmentTests", assignments);
+            }
+            catch (Exception e)
+            {
+                return Json(ResultBase.Failure(e?.Message));
+            }
+        }
+
         [AllowAnonymous]
         [HttpGet("NewTest")]
-        public ActionResult GetNewTest()
+        public ActionResult NewTest()
         {
             return View("TestCreator");
         }
@@ -79,57 +129,6 @@ namespace IBA.Task3.Controllers
         //}
 
         /// <summary>
-        /// Получаем все тесты пользователя.
-        /// </summary>
-        /// <param name="userId">Код пользователя.</param>
-        /// <param name="token">Токен отмены.</param>
-        /// <returns>Возвращает список тестов.</returns>
-
-        [AllowAnonymous]
-        [HttpGet("MyTests")]
-        public async Task<IActionResult> MyTests(CancellationToken token = default)
-        {
-            try
-            {
-                //var user = await UserService.GetAsync(GetUserId(), token);
-                //var test = await TestService.GetAsync(t => t.UserId == GetUserId(), token);
-                var tests = await TestService.AllAsync(t => t.UserId == 2, token, x => x.Questions);
-                //Team team = db.Teams.Include(t => t.Players).FirstOrDefault(t => t.Id == id);
-                if (tests == null)
-                    return NotFound(ResultBase.NotFound());
-
-                return View(tests);
-            }
-            catch (Exception e)
-            {
-                return Json(ResultBase.Failure(e?.Message));
-            }
-        }
-
-        /// <summary>
-        /// Получаем все назначенные тесты не пользователя.
-        /// Если код пользователя не указан - получаем все назначенные тесты текущего пользователя.
-        /// </summary>
-        /// <param name="userId">Код пользователя, кому назначены тесты.</param>
-        /// <param name="token">Токен отмены.</param>
-        /// <returns>Возвращает список назначенных тестов.</returns>
-        [HttpGet("assignment/{userId?}")]
-        public async Task<IActionResult> GetAllAssignedTests(int? userId, CancellationToken token = default)
-        {
-            //DbTestData dbTest = new DbTestData();
-
-            if (!userId.HasValue)
-                userId = GetUserId();
-
-            var assignments = await TestAssignmentService.AllAsync(a => a.UserId == userId, token, x => x.Test);
-
-            if (!assignments.Any())
-                return NotFound(ResultBase.Failure(HttpStatusCode.NotFound));
-
-            return Ok(Result<Test>.Ok(assignments.Select(x => x.Test)));
-        }
-
-        /// <summary>
         /// Получаем все результаты тестов не пользователя.
         /// Если код пользователя не указан - получаем все результаты тестов текущего пользователя.
         /// </summary>
@@ -151,7 +150,7 @@ namespace IBA.Task3.Controllers
         }
 
         //------------------------------------
-        [Authorize]
+        [AllowAnonymous]
         [HttpPost("Create")]
         public async Task<IActionResult> Create(TestModel model, CancellationToken token = default)
         {
@@ -178,9 +177,7 @@ namespace IBA.Task3.Controllers
 
             var questions = await QuestionService.AllAsync(t => t.TestId == test.Id);
 
-            var question = await QuestionService.CreateAsync(
-                    new Question() { TestId = test.Id, Name = model.Question }
-                );
+            var question = await QuestionService.CreateAsync(new Question() { TestId = test.Id, Name = model.Question });
 
             for (int i = 0; i < model.Answers.Count(); i++)
             {
@@ -193,7 +190,7 @@ namespace IBA.Task3.Controllers
             return Ok();
         }
 
-        [HttpPost("Update")]
+        [HttpPost("Update/{userId?}")]
         public async Task<IActionResult> Update(TestUpdateModel model, CancellationToken token = default)
         {
             if (model == null || !ModelState.IsValid)
@@ -238,7 +235,7 @@ namespace IBA.Task3.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("Delete/{userId?}")]
+        [HttpPost("Delete")]
         public async Task<bool> DeleteConfirmed(int id, CancellationToken token = default)
         {
             return await TestService.DeleteAsync(id, token);

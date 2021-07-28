@@ -24,7 +24,7 @@ async function getTokenAsync() {
         localStorage.setItem(tokenKey, data.access_token);
         localStorage.setItem(loginKey, data.username);
         console.log(data.access_token);
-        getHomePage();
+        getHomePage("Home");
     }
     else {
         console.log("Error: ", response.status, data.errorText);
@@ -32,33 +32,53 @@ async function getTokenAsync() {
     }
 };
 
-async function getHomePage() {
-
+async function getHomePage(url) {
     const token = localStorage.getItem(tokenKey);
 
-    //$.ajax({
-    //    type: 'GET',
-    //    url: 'Home',
-    //    beforeSend: function (xhr) {
-
-    //        xhr.setRequestHeader("Authorization", "Bearer " + token);
-    //    },
-    //    success: function (data) {
-    //        alert(data);
-    //    },
-    //    fail: function (data) {
-    //        alert(data);
-    //    }
-
-
-
-    /*location.href = 'Home';*/
-    location.href = await fetch("Home", {
+    const response = await fetch(url, {
+        method: "GET",
         headers: {
             "Accept": "application/json",
-            "Authorization": "Bearer " + token
+            "Authorization": "Bearer " + token  // передача токена в заголовке
         }
     });
+    if (response.ok === true) {
+
+        const data = await response.json();
+        DataView(data);
+        //alert(data)
+    }
+    else
+        console.log("Status: ", response.status);
+};
+
+//async function getHomePage() {
+
+//    const token = localStorage.getItem(tokenKey);
+
+//    //$.ajax({
+//    //    type: 'GET',
+//    //    url: 'Home',
+//    //    beforeSend: function (xhr) {
+
+//    //        xhr.setRequestHeader("Authorization", "Bearer " + token);
+//    //    },
+//    //    success: function (data) {
+//    //        alert(data);
+//    //    },
+//    //    fail: function (data) {
+//    //        alert(data);
+//    //    }
+
+
+
+//    /*location.href = 'Home';*/
+//    location.href = await fetch("Home", {
+//        headers: {
+//            "Accept": "application/json",
+//            "Authorization": "Bearer " + token
+//        }
+//    });
 
     
     /*location = response;*/
@@ -79,7 +99,7 @@ async function getHomePage() {
 
 //    /* alert(href.url);*/
 
-};
+/*};*/
 
 document.getElementById("submitLogin").addEventListener("click", e => {
 

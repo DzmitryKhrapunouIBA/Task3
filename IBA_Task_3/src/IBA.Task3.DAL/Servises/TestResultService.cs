@@ -7,7 +7,7 @@ namespace IBA.Task3.DAL.Servises
     public class TestResultService : AbstractService<AppContext, TestResult>, ITestResultService
     {
         public TestResultService(AppContext context) : base(context)
-        { 
+        {
         }
     }
 }

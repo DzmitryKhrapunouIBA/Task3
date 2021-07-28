@@ -1,35 +1,33 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
+﻿using IBA.Task3.DAL.Context;
 using IBA.Task3.DAL.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Threading;
 using IBA.Task3.DAL.Servises.Contracts;
-using System;
-using System.Linq.Expressions;
 
 namespace IBA.Task3.DAL.Servises
 {
-    public class TestAssignmentService : ITestAssignmentService
+    public class TestAssignmentService : AbstractService<AppContext, TestAssignment>, ITestAssignmentService
     {
-        private Context.AppContext Context { get; }
-
-        public TestAssignmentService(Context.AppContext context)
+        public TestAssignmentService(AppContext context) : base(context)
         {
-            Context = context;
         }
 
-        public virtual async Task<IEnumerable<TestAssignment>> AllAsync(Func<TestAssignment, bool> func, CancellationToken token = default, params Expression<Func<TestAssignment, object>>[] includes)
-        {
-            var query = Context.Set<TestAssignment>().AsNoTracking();
+        //private Context.AppContext Context { get; }
 
-            if (includes != null && includes.Any())
-                query = includes.Aggregate(query, (x, y) => x.Include(y));
+        //public TestAssignmentService(Context.AppContext context)
+        //{
+        //    Context = context;
+        //}
 
-            if (func != null)
-                query = (IQueryable<TestAssignment>)query.Where(func);
+        //public virtual async Task<IEnumerable<TestAssignment>> AllAsync(Func<TestAssignment, bool> func, CancellationToken token = default, params Expression<Func<TestAssignment, object>>[] includes)
+        //{
+        //    var query = Context.Set<TestAssignment>().AsNoTracking();
 
-            return await query.ToListAsync(token);
-        }
+        //    if (includes != null && includes.Any())
+        //        query = includes.Aggregate(query, (x, y) => x.Include(y));
+
+        //    if (func != null)
+        //        query = (IQueryable<TestAssignment>)query.Where(func);
+
+        //    return await query.ToListAsync(token);
+        //}
     }
 }

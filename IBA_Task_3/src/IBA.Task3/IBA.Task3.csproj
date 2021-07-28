@@ -12,18 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\Scripts\GetMyTests.js" />
     <Content Remove="wwwroot\Scripts\Layout.js" />
     <Content Remove="wwwroot\Scripts\Login.js" />
     <Content Remove="wwwroot\Scripts\Registration.js" />
     <Content Remove="wwwroot\Scripts\TestCreator.js" />
     <Content Remove="wwwroot\Scripts\TestEditor.js" />
+    <Content Remove="wwwroot\Scripts\TestRemover.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\Scripts\Layout.js" />
     <None Include="wwwroot\Scripts\TestCreator.js" />
-    <None Include="wwwroot\Scripts\GetMyTests.js" />
+    <None Include="wwwroot\Scripts\TestRemover.js" />
     <None Include="wwwroot\Scripts\TestEditor.js" />
     <None Include="wwwroot\Scripts\Registration.js" />
     <None Include="wwwroot\Scripts\Login.js" />
